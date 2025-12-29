@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Special Invitation 💌</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('cb6b43648877abf4f574d500068c6d35.jpg');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    /* Envelope */
+    .envelope {
+      width: 260px;
+      height: 160px;
+      margin: auto;
+      background: #ff8fab;
+      position: relative;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ff5d8f;
+      clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .click-text {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #c9184a;
+    }
+
+    /* Letter */
+    .letter {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      animation: slideUp 1s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn { background: #38b000; color: #fff; }
+    #noBtn { background: #d00000; color: #fff; }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 10;
+      padding-bottom: 40px;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 30px 20px;
+      border-radius: 12px 12px 0 0;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: letterRise 1.2s ease forwards;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.25);
+    }
+
+    .popup-content::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: #ff5d8f;
+      clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    }
+
+    @keyframes letterRise {
+      from { transform: translateY(120%); }
+      to { transform: translateY(0); }
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .container { max-width: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="envelope" class="envelope"></div>
+    <div class="click-text" style="font-family: 'Pacifico', cursive; font-weight: 200;">💌 Clicca sulla busta per aprirla 💌</div>
+
+    <div id="letter" class="letter">
+      <h2 style="font-family: 'Pacifico', cursive; font-weight: 300;">Ciao Amore Mio 💕</h2>
+      <p style="font-style: italic;">
+        I know this year in our relationship has been full of ups and downs.
+        We spent some time apart, me being at BCC and you being at UWI for a year and some, then I joined you at UWI,
+        then we had our storm of a season, we got closer after that season, then we had our exam season well I did, and now it's time for us to celebrate.
+        I was wondering if you’d like to go on a special date with me.
+        Just us, good vibes, laughs, and making memories together ✨
+      </p>
+      <p style="font-family: 'Pacifico', cursive; font-weight: 200;"><strong>So… will you go on a date with me? 🥰</strong></p>
+
+      <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No 🙈</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <button id="closePopup" style="position:absolute; top:10px; right:15px; background:none; border:none; font-size:22px; cursor:pointer;">✕</button>
+      <h2 style="font-family: 'Pacifico', cursive; font-weight: 300;">Ottimo è un appuntamento 🎉💃🏽</h2>
+      <p><strong style="font-family: 'Pacifico', cursive; font-weight: 200;">Date:</strong> Wednesday</p>
+      <p><strong style="font-family: 'Pacifico', cursive; font-weight: 200;">Time:</strong> 2:00 PM</p>
+      <p><strong style="font-family: 'Pacifico', cursive; font-weight: 200;">Place:</strong> Hastings ✨</p>
+      <p><strong style="font-family: 'Pacifico', cursive; font-weight: 200;">Dress Code:</strong> Elegantly Casual</p>
+      <p><strong style="font-family: 'Pacifico', cursive; font-weight: 200;">Occasion:</strong> 2 year Anniversary</p>
+      <p>Non vedo l'ora di vederti 😍</p>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="audio/Tony Toni Tone - Anniversary.mp4" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const letter = document.getElementById('letter');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const popup = document.getElementById('popup');
+    const bgMusic = document.getElementById('bgMusic');
+    const closePopup = document.getElementById('closePopup');
+
+    let noScale = 1;
+    let yesScale = 1;
+
+    envelope.addEventListener('click', () => {
+      envelope.style.display = 'none';
+      document.querySelector('.click-text').style.display = 'none';
+      letter.style.display = 'block';
+    });
+
+    noBtn.addEventListener('mouseenter', () => {
+      const container = document.querySelector('.letter');
+      const rect = container.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = rect.width - btnRect.width - 20;
+      const maxY = rect.height - btnRect.height - 20;
+
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+
+      yesScale += 0.1;
+      yesBtn.style.transform = `scale(${yesScale})`;
+    });
+
+    yesBtn.addEventListener('click', () => {
+      popup.style.display = 'flex';
+      bgMusic.volume = 0.5;
+      bgMusic.play();
+      launchConfetti();
+    });
+
+    closePopup.addEventListener('click', () => {
+      popup.style.display = 'none';
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+    });
+    
+
+    function launchConfetti() {
+      const duration = 5 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 6,
+          spread: 70,
+          origin: { x: Math.random(), y: Math.random() - 0.2 }
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+
+  </script>
+</body>
+</html>
